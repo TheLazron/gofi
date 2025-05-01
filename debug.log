@@ -1,0 +1,33 @@
+help 2025/05/01 19:59:11 Is protected: {Password:20122020}
+help 2025/05/01 19:59:45 Is protected: {Password:20122020}
+help 2025/05/01 20:01:24 Is protected: {Password:20122020}
+help 2025/05/01 20:02:35 Is protected: {Password:20122020}
+help 2025/05/01 20:02:46 Is protected: {Password:20122020q}
+help 2025/05/01 20:02:47 Is protected: {Password:20122020qq}
+help 2025/05/01 20:02:49 Is protected: {Password:20122020qqq}
+help 2025/05/01 20:02:49 Is protected: {Password:20122020qqqq}
+help 2025/05/01 20:02:49 Is protected: {Password:20122020qqqqq}
+help 2025/05/01 20:28:04 Connectning to 260A_5G 
+help 2025/05/01 20:30:08 Connectning to 260A_5G, &{device:{dbusBase:{conn:0xc000170000 obj:0xc00050d230}}}, &{dbusBase:{conn:0xc000170000 obj:0xc000202720}}, +{20122020} 
+help 2025/05/01 20:30:20 Connectning to 260A_5G, &{device:{dbusBase:{conn:0xc000170000 obj:0xc000356480}}}, &{dbusBase:{conn:0xc000170000 obj:0xc0001a6ea0}}, +{20122020} 
+help 2025/05/01 20:34:05 Connectning to 260A_5G 
+help 2025/05/01 20:44:33 Connectning to 260A_5G 
+help 2025/05/01 20:44:33 Attempting to connect with AP: &{dbusBase:{conn:0xc000170000 obj:0xc0000a1020}}, Password: 2012020, Device: &{{{0xc000170000 0xc0003951a0}}}
+help 2025/05/01 20:45:09 Connectning to 260A_5G 
+help 2025/05/01 20:45:09 Attempting to connect with AP: &{dbusBase:{conn:0xc000192000 obj:0xc0000a14d0}}, Password: 20122020, Device: &{{{0xc000192000 0xc0004140c0}}}
+help 2025/05/01 20:45:09 Recovered from panic: assignment to entry in nil map
+help 2025/05/01 20:45:55 Connectning to 260A_5G 
+help 2025/05/01 20:55:27 Connectning to vivo Y35 
+help 2025/05/01 20:56:11 Connectning to Anshul 4G 
+help 2025/05/01 20:58:50 Connecting to Gita4G 
+help 2025/05/01 20:58:51 Connecting to Gita4G 
+help 2025/05/01 20:58:51 Connecting to Gita4G 
+help 2025/05/01 20:58:52 Connecting to Gita4G 
+help 2025/05/01 20:58:52 Connecting to Gita4G 
+help 2025/05/01 20:58:52 Connecting to Gita4G 
+help 2025/05/01 20:58:52 Connecting to Gita4G 
+help 2025/05/01 20:58:53 Connecting to Gita4G 
+help 2025/05/01 21:01:26 Connecting to Gita4G 
+help 2025/05/01 21:03:13 Connecting to Gita4G 
+help 2025/05/01 21:07:41 Connecting to 260A_5G 
+help 2025/05/01 21:08:05 Connecting to vivo Y35 

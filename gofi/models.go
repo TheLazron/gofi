@@ -1,8 +1,6 @@
 package gofi
 
-import (
-	"github.com/Wifx/gonetworkmanager"
-)
+import "github.com/Wifx/gonetworkmanager"
 
 const (
 	StrengthPoor      = "Poor"
@@ -25,18 +23,27 @@ type WiFiNetwork struct {
 }
 
 type Connection struct {
-	IsActive bool
-	Strength string
-	gonetworkmanager.Device
-	Name string
+	IsActive    bool
+	Protected   bool
+	Strength    string
+	Name        string
+	AccessPoint gonetworkmanager.AccessPoint
 }
 
-func NewConnection(conn WiFiNetwork) Connection {
+func NewConnection(conn WiFiNetwork, accessPoint gonetworkmanager.AccessPoint) Connection {
+
+	//WPA and RSN equals 0 implies the network isn't protected
 	return Connection{
-		IsActive: false,
-		Strength: getStrength(conn.Strength),
-		Name:     conn.SSID,
+		IsActive:    false,
+		Protected:   IsConnProtected(conn),
+		Strength:    getStrength(conn.Strength),
+		Name:        conn.SSID,
+		AccessPoint: accessPoint,
 	}
+}
+
+func IsConnProtected(conn WiFiNetwork) bool {
+	return conn.WPAFlags != 0 || conn.RSNFlags != 0
 }
 
 func getStrength(strength uint8) string {

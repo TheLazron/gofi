@@ -2,12 +2,14 @@ package gofi
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/Wifx/gonetworkmanager"
 )
 
 type Client struct {
 	gonetworkmanager.NetworkManager
+	Device gonetworkmanager.DeviceWireless
 }
 
 func New() (*Client, error) {
@@ -23,7 +25,6 @@ func New() (*Client, error) {
 }
 
 func (c *Client) GetWifiClient() (gonetworkmanager.DeviceWireless, error) {
-
 	var wirelessDevice gonetworkmanager.DeviceWireless
 	//@TODO: Check for availability of the wifi device
 
@@ -46,7 +47,7 @@ func (c *Client) GetWifiClient() (gonetworkmanager.DeviceWireless, error) {
 			wirelessDevice = wireless
 		}
 	}
-
+	c.Device = wirelessDevice
 	return wirelessDevice, nil
 }
 
@@ -77,65 +78,49 @@ func (c *Client) ListDevices() ([]Connection, error) {
 		if err != nil {
 			continue
 		}
-		c := NewConnection(acsPoint)
+		c := NewConnection(acsPoint, connection)
 		conns = append(conns, c)
 	}
 	return conns, nil
 }
 
-// func (c *Client) ListDevices() ([]Connection, error) {
-// 	dcs, _ := c.GetAllDevices()
-// 	for _, dc := range dcs {
-// 		a, _ := dc.GetPropertyDeviceType()
-// 		if a == gonetworkmanager.NmDeviceTypeWifi {
-// 			// conns, _ := dc.GetPropertyActiveConnection()
-// 			wireless, _ := gonetworkmanager.NewDeviceWireless(dc.GetPath())
-// 			wireless.RequestScan()
+type ConnectionOptions struct {
+	Password string
+}
 
-// 			acspts, _ := wireless.GetPropertyAccessPoints()
+func (c *Client) Connect(connectionOptions ConnectionOptions, accessPoint gonetworkmanager.AccessPoint, device gonetworkmanager.DeviceWireless) (string, bool) {
 
-// 			for _, acspt := range acspts {
-// 				a, _ := acspt.MarshalJSON()
-// 				fmt.Printf("%+v", string(a))
-// 			}
+	fmt.Printf("Is protected: %+v", connectionOptions)
+	//Check if protected
+	var wifiConn WiFiNetwork
+	conn, err := accessPoint.MarshalJSON()
+	if err != nil {
+		return "Failed to establish connection", false
+	}
 
-// 			// g, _ := conns.GetPropertySpecificObject()
-// 			// h, _ := g.MarshalJSON()
-// 			// fmt.Printf("hr %v", string(h))
+	err = json.Unmarshal(conn, &wifiConn)
+	if err != nil {
+		return "Failed to establish conection", false
+	}
 
-// 			// for _, conn := range conns {
-// 			// a, _ := conn.
-// 			// fmt.Printf("conns: %+v", a)
-// 			// }
-// 		}
-// 	}
-// 	devices, err := c.GetPropertyActiveConnections()
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	fmt.Println(devices)
-// 	var conns []Connection
-// 	fmt.Println(len(devices))
-// 	for _, device := range devices {
-// 		device.GetPropertyUUID()
-// 		a, _ := c.GetPropertyPrimaryConnection()
-// 		v, err := a.GetPropertySpecificObject()
-// 		f, _ := v.GetPropertySSID()
-// 		fmt.Printf("Active %+v\n", f)
-// 		// _, err := device.GetPropertyState()
-// 		if err != nil {
-// 			log.Println("Failed to load device", device.GetPath())
-// 			continue
-// 		}
-// 		// p, _ := device.GetPropertyActiveConnection()
-// 		// if p != nil {
+	isProtected := IsConnProtected(wifiConn)
+	connection := make(map[string]map[string]any)
+	if isProtected {
+		connection["802-11-wireless"] = make(map[string]any)
+		connection["802-11-wireless"]["security"] = "802-11-wireless-security"
+		connection["802-11-wireless-security"] = make(map[string]any)
+		connection["802-11-wireless-security"]["key-mgmt"] = "sae wpa-psk"
+		connection["802-11-wireless-security"]["psk"] = connectionOptions.Password
+	}
 
-// 		// fmt.Println(p.GetPropertyID())
-// 		// }
-// 		// conns = append(conns, Connection{
-// 		// 	isActive: state == gonetworkmanager.NmDeviceStateActivated,
-// 		// 	Device:   device,
-// 		// })
-// 	}
-// 	return conns, nil
-// }
+	activeConnection, err := c.AddAndActivateWirelessConnection(connection, device, accessPoint)
+	fmt.Println("Active connection", activeConnection)
+	if err != nil {
+		fmt.Println("Failed to establish connection", err)
+		return "Failed to establish connection", false
+	}
+	cn, _ := activeConnection.GetPropertyConnection()
+	j, _ := cn.MarshalJSON()
+	return fmt.Sprintf("Connected to %+v", string(j)), true
+
+}
