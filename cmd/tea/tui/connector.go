@@ -69,7 +69,7 @@ func (c Connector) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return InitWifi()
 			}
 
-			fmt.Println("Faild to connect. Make sure the password is correct and try again.")
+			fmt.Println("Failed to connect. Make sure the password is correct and try again.")
 			return nil, tea.Quit
 
 		case key.Matches(msg, constants.Keymap.Quit):
@@ -102,7 +102,7 @@ func (c Connector) View() string {
 	return fmt.Sprintf(
 		"\n%s\n\n%s\n%s",
 		"",
-		"Press enter to confirm connection",
+		fmt.Sprintf("Press enter to confirm connection to %s", c.selectedItem.Name),
 		"(Esc to return)",
 	)
 }

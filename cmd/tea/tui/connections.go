@@ -71,7 +71,7 @@ func InitWifi() (tea.Model, tea.Cmd) {
 		})
 	}
 	c := Connections{
-		list:       list.New(connItems, list.NewDefaultDelegate(), 0, 0),
+		list:       list.New(connItems, list.NewDefaultDelegate(), 50, 50),
 		gofiClient: gofiClient,
 	}
 
@@ -87,6 +87,9 @@ func (c Connections) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
+		c.list.SetWidth(msg.Width)
+		c.list.SetHeight(msg.Height)
+		return c, nil
 
 	case tea.KeyMsg:
 		switch {

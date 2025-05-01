@@ -90,7 +90,6 @@ type ConnectionOptions struct {
 
 func (c *Client) Connect(connectionOptions ConnectionOptions, accessPoint gonetworkmanager.AccessPoint, device gonetworkmanager.DeviceWireless) (string, bool) {
 
-	fmt.Printf("Is protected: %+v", connectionOptions)
 	//Check if protected
 	var wifiConn WiFiNetwork
 	conn, err := accessPoint.MarshalJSON()
@@ -114,7 +113,6 @@ func (c *Client) Connect(connectionOptions ConnectionOptions, accessPoint gonetw
 	}
 
 	activeConnection, err := c.AddAndActivateWirelessConnection(connection, device, accessPoint)
-	fmt.Println("Active connection", activeConnection)
 	if err != nil {
 		fmt.Println("Failed to establish connection", err)
 		return "Failed to establish connection", false
